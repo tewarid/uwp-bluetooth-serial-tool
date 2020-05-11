@@ -23,6 +23,79 @@
                 The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
                 Place your content here.
             -->
+            <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+                <ComboBox
+                    x:Name="DevicesComboBox"
+                    ItemsSource="{x:Bind Devices}"
+                    IsEnabled="{x:Bind Disconnected, Mode=OneWay}"
+                    Header="Paired Bluetooth Serial Devices"
+                    PlaceholderText="Pick a paired Bluetooth Serial Device"
+                    Width="Auto" SelectionChanged="DevicesComboBox_SelectionChanged"
+                    ToolTipService.ToolTip="{x:Bind Device.Id, Mode=OneWay}">
+                </ComboBox>
+                <RelativePanel HorizontalAlignment="Right">
+                    <Button
+                        x:Name="RefreshButton"
+                        Margin="8,8,0,0"
+                        Click="RefreshButton_Click"
+                        IsEnabled="{x:Bind Disconnected, Mode=OneWay}">Refresh
+                    </Button>
+                    <Button
+                        x:Name="ConnectButton"
+                        RelativePanel.RightOf="RefreshButton"
+                        Margin="8,8,0,0"
+                        Click="ConnectButton_Click"
+                        IsEnabled="{x:Bind Disconnected, Mode=OneWay}">Connect
+                    </Button>
+                    <Button
+                        x:Name="DisconnectButton"
+                        RelativePanel.RightOf="ConnectButton"
+                        Margin="8,8,0,0" Click="DisconnectButton_Click"
+                        IsEnabled="{x:Bind Connected, Mode=OneWay}">Disconnect
+                    </Button>
+                </RelativePanel>
+                <TextBlock>Data to send - text sent as UTF-8</TextBlock>
+                <TextBox
+                    Name="SendTextBox"
+                    Height="120"
+                    AcceptsReturn="True"
+                    TextWrapping="Wrap"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"></TextBox>
+                <CheckBox Name="SendTextBoxContainsHex">Convert to binary - text is in hexadecimal</CheckBox>
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton
+                        Name="EndOfLineDos"
+                        IsChecked="True"
+                        GroupName="EndOfLine">DOS (CR-LF)
+                    </RadioButton>
+                    <RadioButton
+                        Name="EndOfLineMacOs"
+                        GroupName="EndOfLine">macOS(CR)
+                    </RadioButton>
+                    <RadioButton
+                        Name="EndOfLineUnix"
+                        GroupName="EndOfLine">Unix (LF)
+                    </RadioButton>
+                </StackPanel>
+                <Button
+                    Name="SendButton"
+                    HorizontalAlignment="Right"
+                    Margin="0,8,0,0"
+                    IsEnabled="{x:Bind Connected, Mode=OneWay}"
+                    Click="SendButton_Click">Send
+                </Button>
+                <TextBlock>Data Received</TextBlock>
+                <TextBox
+                    Name="DataReceivedTextBox"
+                    Height="Auto" MinHeight="120"
+                    MaxHeight="240"
+                    AcceptsReturn="True"
+                    TextWrapping="Wrap"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    IsReadOnly="True"></TextBox>
+                <CheckBox Name="ShowReceivedDataInHex">Show data in hexadecimal</CheckBox>
+                <Button HorizontalAlignment="Right" Margin="0,8,0,0" Click="Button_Click">Clear</Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>
