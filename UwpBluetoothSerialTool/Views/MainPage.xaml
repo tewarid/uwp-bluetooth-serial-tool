@@ -38,43 +38,54 @@
                         x:Name="RefreshButton"
                         Margin="8,8,0,0"
                         Click="RefreshButton_Click"
-                        IsEnabled="{x:Bind Disconnected, Mode=OneWay}">Refresh
+                        IsEnabled="{x:Bind Disconnected, Mode=OneWay}">
+                        <TextBlock Text="Refresh"></TextBlock>
                     </Button>
                     <Button
                         x:Name="ConnectButton"
                         RelativePanel.RightOf="RefreshButton"
                         Margin="8,8,0,0"
                         Click="ConnectButton_Click"
-                        IsEnabled="{x:Bind Disconnected, Mode=OneWay}">Connect
+                        IsEnabled="{x:Bind Disconnected, Mode=OneWay}">
+                        <TextBlock Text="Connect"></TextBlock>
                     </Button>
                     <Button
                         x:Name="DisconnectButton"
                         RelativePanel.RightOf="ConnectButton"
                         Margin="8,8,0,0" Click="DisconnectButton_Click"
-                        IsEnabled="{x:Bind Connected, Mode=OneWay}">Disconnect
+                        IsEnabled="{x:Bind Connected, Mode=OneWay}">
+                        <TextBlock Text="Disconnect"></TextBlock>
                     </Button>
                 </RelativePanel>
-                <TextBlock>Data to send - text sent as UTF-8</TextBlock>
+                <TextBlock Text="Data to send - text sent as UTF-8"></TextBlock>
                 <TextBox
                     Name="SendTextBox"
                     Height="120"
                     AcceptsReturn="True"
                     TextWrapping="Wrap"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"></TextBox>
-                <CheckBox Name="SendTextBoxContainsHex">Convert to binary - text is in hexadecimal</CheckBox>
+                <CheckBox Name="SendTextBoxContainsHex">
+                    <TextBlock Text="Convert to binary - text is in hexadecimal"></TextBlock></CheckBox>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Pick end of line" VerticalAlignment="Center"></TextBlock>
                     <RadioButton
                         Name="EndOfLineDos"
                         IsChecked="True"
-                        GroupName="EndOfLine">DOS (CR-LF)
+                        Margin="8,0,0,0"
+                        GroupName="EndOfLine">
+                        <TextBlock Text="DOS (Carriage return-Newline)"></TextBlock>
                     </RadioButton>
                     <RadioButton
                         Name="EndOfLineMacOs"
-                        GroupName="EndOfLine">macOS(CR)
+                        Margin="8,0,0,0"
+                        GroupName="EndOfLine">
+                        <TextBlock Text="macOS (Carriage return)"></TextBlock>
                     </RadioButton>
                     <RadioButton
                         Name="EndOfLineUnix"
-                        GroupName="EndOfLine">Unix (LF)
+                        Margin="8,0,0,0"
+                        GroupName="EndOfLine">
+                        <TextBlock Text="Unix (Newline)"></TextBlock>
                     </RadioButton>
                 </StackPanel>
                 <Button
@@ -82,9 +93,10 @@
                     HorizontalAlignment="Right"
                     Margin="0,8,0,0"
                     IsEnabled="{x:Bind Connected, Mode=OneWay}"
-                    Click="SendButton_Click">Send
+                    Click="SendButton_Click">
+                    <TextBlock Text="Send"></TextBlock>
                 </Button>
-                <TextBlock>Data Received</TextBlock>
+                <TextBlock Text="Data Received"></TextBlock>
                 <TextBox
                     Name="DataReceivedTextBox"
                     Height="Auto" MinHeight="120"
@@ -93,8 +105,12 @@
                     TextWrapping="Wrap"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     IsReadOnly="True"></TextBox>
-                <CheckBox Name="ShowReceivedDataInHex">Show data in hexadecimal</CheckBox>
-                <Button HorizontalAlignment="Right" Margin="0,8,0,0" Click="Button_Click">Clear</Button>
+                <CheckBox Name="ShowReceivedDataInHex">
+                    <TextBlock Text="Show data in hexadecimal"></TextBlock>
+                </CheckBox>
+                <Button HorizontalAlignment="Right" Margin="0,8,0,0" Click="Button_Click">
+                    <TextBlock Text="Clear"></TextBlock>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>
