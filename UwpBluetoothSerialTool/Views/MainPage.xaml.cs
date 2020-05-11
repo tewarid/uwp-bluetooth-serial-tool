@@ -1,19 +1,18 @@
-﻿using System;
+﻿using HexToBinLib;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
-using Windows.Devices.Bluetooth.Rfcomm;
-using Windows.Devices.Enumeration;
-using Windows.UI.Xaml.Controls;
 using UwpBluetoothSerialTool.Core.Models;
 using Windows.Devices.Bluetooth;
+using Windows.Devices.Bluetooth.Rfcomm;
+using Windows.Devices.Enumeration;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
-using System.Linq;
-using System.Text;
-using System.IO;
-using HexToBinLib;
+using Windows.UI.Xaml.Controls;
 
 namespace UwpBluetoothSerialTool.Views
 {
@@ -131,14 +130,14 @@ namespace UwpBluetoothSerialTool.Views
             {
                 return;
             }
-            if (this.Device == null)
+            if (Device == null)
             {
                 return;
             }
-            BluetoothDevice device = await BluetoothDevice.FromIdAsync(this.Device.Id);
-            if (device == null)
+            BluetoothDevice bluetoothDevice = await BluetoothDevice.FromIdAsync(Device.Id);
+            if (bluetoothDevice == null)
             {
-                DeviceAccessStatus accessStatus = DeviceAccessInformation.CreateFromId(this.Device.Id).CurrentStatus;
+                DeviceAccessStatus accessStatus = DeviceAccessInformation.CreateFromId(Device.Id).CurrentStatus;
                 if (accessStatus == DeviceAccessStatus.DeniedByUser)
                 {
                     ContentDialog noBluetoothDialog = new ContentDialog()
@@ -151,7 +150,7 @@ namespace UwpBluetoothSerialTool.Views
                 }
                 return;
             }
-            var rfcommServices = await device.GetRfcommServicesForIdAsync(RfcommServiceId.SerialPort, BluetoothCacheMode.Cached);
+            var rfcommServices = await bluetoothDevice.GetRfcommServicesForIdAsync(RfcommServiceId.SerialPort, BluetoothCacheMode.Cached);
             if (rfcommServices.Services.Count == 0)
             {
                 return;
@@ -175,6 +174,8 @@ namespace UwpBluetoothSerialTool.Views
                     CloseButtonText = "OK"
                 };
                 await notAvailableDialog.ShowAsync();
+                socket.Dispose();
+                socket = null;
                 return;
             }
             Connected = true;
@@ -230,6 +231,11 @@ namespace UwpBluetoothSerialTool.Views
         }
 
         private void DisconnectButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            Disconnect();
+        }
+
+        private void Disconnect()
         {
             if (!Connected)
             {
@@ -304,6 +310,8 @@ namespace UwpBluetoothSerialTool.Views
                         Content = "Check that the device is available and not in use.",
                         CloseButtonText = "OK"
                     };
+                    await notAvailableDialog.ShowAsync();
+                    Disconnect();
                 }
             }
         }
