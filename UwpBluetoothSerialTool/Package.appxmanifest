@@ -10,15 +10,15 @@
   IgnorableNamespaces="uap mp genTemplate">
 
   <Identity
-    Name="A6566CC3-BDBE-420A-85BE-906DFF7B9A01"
-    Publisher="CN=dkt"
+    Name="23413DevendraTewari.BluetoothSerialTool"
+    Publisher="CN=45EE7F3F-ED2B-45A2-91C7-7AC934F26DC4"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="A6566CC3-BDBE-420A-85BE-906DFF7B9A01" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="8ed14400-c5d2-49c6-a552-3d212caa8e8f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>UwpBluetoothSerialTool</DisplayName>
-    <PublisherDisplayName>dkt</PublisherDisplayName>
+    <DisplayName>Bluetooth Serial Tool</DisplayName>
+    <PublisherDisplayName>Devendra Tewari</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
