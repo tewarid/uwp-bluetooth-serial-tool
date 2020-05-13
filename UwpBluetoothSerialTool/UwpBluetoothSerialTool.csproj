@@ -236,6 +236,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <PRIResource Include="Strings\pt-br\Resources.resw" />
     <None Include="UwpBluetoothSerialTool_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

@@ -126,7 +126,7 @@
     <comment>Application description</comment>
   </data>
   <data name="Main_Title.Text" xml:space="preserve">
-    <value>Communicate with your Bluetooth Serial Device</value>
+    <value>Comunique-se com seu dispositivo serial Bluetooth</value>
     <comment>Page title for MainPage</comment>
   </data>
   <data name="ExceptionSettingsStorageExtensionsFileNameIsNullOrEmpty" xml:space="preserve">
@@ -134,31 +134,31 @@
     <comment>File name is null or empty to save file in settings storage extensions</comment>
   </data>
   <data name="Settings_Theme.Text" xml:space="preserve">
-    <value>Choose Theme</value>
+    <value>Escolha o Tema</value>
     <comment>Choose theme text for Settings</comment>
   </data>
   <data name="Settings_Theme_Dark.Content" xml:space="preserve">
-    <value>Dark</value>
+    <value>Escuro</value>
     <comment>Dark theme text for Settings</comment>
   </data>
   <data name="Settings_Theme_Default.Content" xml:space="preserve">
-    <value>Windows default</value>
+    <value>Padrão do Windows</value>
     <comment>Windows default theme text for Settings</comment>
   </data>
   <data name="Settings_Theme_Light.Content" xml:space="preserve">
-    <value>Light</value>
+    <value>Claro</value>
     <comment>Light theme text for Settings</comment>
   </data>
   <data name="Settings_About.Text" xml:space="preserve">
-    <value>About this application</value>
+    <value>Sobre esta aplicação</value>
     <comment>About this application title for Settings</comment>
   </data>
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
-    <value>This application lets you communicate with your Bluetooth Serial device.</value>
+    <value>Este aplicativo permite que você se comunique com o seu dispositivo serial Bluetooth.</value>
     <comment>About this application description for Settings</comment>
   </data>
   <data name="Settings_PrivacyTermsLink.Content" xml:space="preserve">
-    <value>Privacy Statement</value>
+    <value>Declaração de privacidade</value>
     <comment>Privacy Statement link content for Settings</comment>
   </data>
   <data name="Settings_PrivacyTermsLink.NavigateUri" xml:space="preserve">
@@ -166,7 +166,7 @@
     <comment>Here is your Privacy Statement url for Settings</comment>
   </data>
   <data name="Settings_Personalization.Text" xml:space="preserve">
-    <value>Personalization</value>
+    <value>Personalização</value>
     <comment>Personalization text for Settings</comment>
   </data>
   <data name="ExceptionEnumToBooleanConverterValueMustBeAnEnum" xml:space="preserve">
@@ -178,22 +178,22 @@
     <comment>Parameter must be an Enum name in enum to boolean converter</comment>
   </data>
   <data name="Settings_Title.Text" xml:space="preserve">
-    <value>Settings</value>
+    <value>Definições</value>
     <comment>Page title for SettingsPage</comment>
   </data>
   <data name="FirstRun_Body.Text" xml:space="preserve">
-    <value>This application lets you communicate with your Bluetooth Serial device. You can:
+    <value>Este aplicativo permite que você se comunique com o seu dispositivo serial Bluetooth. Você pode:
 
-- Connect to a paired Bluetooth Serial device
-- Send text or binary
-- Pick a line ending for text
-- Receive text or binary
-- Run multiple instances of the application to communicate with other devices
-- See source code and report issues at https://github.com/tewarid/uwp-bluetooth-serial-tool</value>
+- Conectar-se a um dispositivo serial Bluetooth emparelhado
+- Enviar texto ou binário
+- Escolher uma linha que termina para o texto
+- Receber texto ou binário
+- Executar várias instâncias do aplicativo para se comunicar com outros dispositivos
+- Consultar o código-fonte e relatar problemas em https://github.com/tewarid/uwp-bluetooth-serial-tool</value>
     <comment>First use prompt message body</comment>
   </data>
   <data name="FirstRunDialog.Title" xml:space="preserve">
-    <value>Welcome</value>
+    <value>Bem-vinda</value>
     <comment>First use prompt message title</comment>
   </data>
   <data name="FirstRunDialog.PrimaryButtonText" xml:space="preserve">
@@ -201,12 +201,12 @@
     <comment>First use prompt message primary button text</comment>
   </data>
   <data name="WhatsNew_Body.Text" xml:space="preserve">
-    <value>- Support for Brazilian Portuguese
-- New logo</value>
+    <value>- Suporte para Português Brasileiro
+- Novo logotipo</value>
     <comment>What's new prompt message body</comment>
   </data>
   <data name="WhatsNewDialog.Title" xml:space="preserve">
-    <value>What's new in this version</value>
+    <value>O que há de novo nesta versão</value>
     <comment>What's new prompt message title</comment>
   </data>
   <data name="WhatsNewDialog.PrimaryButtonText" xml:space="preserve">
@@ -214,63 +214,63 @@
     <comment>What's new prompt message primary button text</comment>
   </data>
   <data name="Main_ClearButton.Text" xml:space="preserve">
-    <value>Clear</value>
+    <value>Limpar</value>
     <comment>ClearButton text</comment>
   </data>
   <data name="Main_ConnectButton.Text" xml:space="preserve">
-    <value>Connect</value>
+    <value>Conectar</value>
     <comment>ConnectButton text</comment>
   </data>
   <data name="Main_DataReceivedTextBoxTitle.Text" xml:space="preserve">
-    <value>Data Received</value>
+    <value>Dados Recebidos</value>
     <comment>DataReceivedTextBox title</comment>
   </data>
   <data name="Main_DevicesComboBox.Header" xml:space="preserve">
-    <value>Paired Bluetooth Serial Devices</value>
+    <value>Dispositivos seriais Bluetooth emparelhados</value>
     <comment>Header Devices ComboBox</comment>
   </data>
   <data name="Main_DevicesComboBox.PlaceholderText" xml:space="preserve">
-    <value>Pick a paired Bluetooth Serial Device</value>
+    <value>Escolha um dispositivo serial Bluetooth emparelhado</value>
     <comment>PlaceholderText of Devices ComboBox</comment>
   </data>
   <data name="Main_DisconnectButton.Text" xml:space="preserve">
-    <value>Disconnect</value>
+    <value>Desconectar</value>
     <comment>DisconnectButton text</comment>
   </data>
   <data name="Main_EndOfLineDos.Text" xml:space="preserve">
-    <value>DOS (Carriage return-Newline)</value>
+    <value>DOS (Retorno de carro-Nova Linha)</value>
     <comment>DOS (Carriage return-Newline)</comment>
   </data>
   <data name="Main_EndOfLineMacOs.Text" xml:space="preserve">
-    <value>macOS (Carriage return)</value>
+    <value>macOS (Retorno de carro)</value>
     <comment>macOS (Carriage return)</comment>
   </data>
   <data name="Main_EndOfLineUnix.Text" xml:space="preserve">
-    <value>Unix (Newline)</value>
+    <value>Unix (Nova linha)</value>
     <comment>Unix (Newline)</comment>
   </data>
   <data name="Main_PickEndOfLIne.Text" xml:space="preserve">
-    <value>Pick end of line</value>
+    <value>Escolha o fim da linha</value>
     <comment>Pick end of line title</comment>
   </data>
   <data name="Main_RefreshButton.Text" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Atualizar</value>
     <comment>RefreshButton text</comment>
   </data>
   <data name="Main_SendButton.Text" xml:space="preserve">
-    <value>Send</value>
+    <value>Enviar</value>
     <comment>SendButton text</comment>
   </data>
   <data name="Main_SendTextBoxContainsHex.Text" xml:space="preserve">
-    <value>Convert to binary - text is in hexadecimal</value>
+    <value>Converter para binário - o texto está em hexadecimal</value>
     <comment>SendTextBoxContainsHex CheckBox text</comment>
   </data>
   <data name="Main_SendTextBoxTitle.Text" xml:space="preserve">
-    <value>Data to send - text sent as UTF-8</value>
+    <value>Dados a enviar - o texto será enviado como UTF-8</value>
     <comment>SendTextBox title</comment>
   </data>
   <data name="Main_ShowReceivedDataInHex.Text" xml:space="preserve">
-    <value>Show data in hexadecimal</value>
+    <value>Mostrar dados em hexadecimal</value>
     <comment>Show data in hexadecimal</comment>
   </data>
 </root>
