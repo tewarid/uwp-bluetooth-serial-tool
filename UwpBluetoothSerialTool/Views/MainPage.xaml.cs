@@ -316,7 +316,7 @@ namespace UwpBluetoothSerialTool.Views
             }
         }
 
-        private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void ClearButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             DataReceivedTextBox.Text = string.Empty;
         }

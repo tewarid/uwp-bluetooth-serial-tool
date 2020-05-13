@@ -26,20 +26,19 @@
             <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
                 <ComboBox
                     x:Name="DevicesComboBox"
+                    x:Uid="Main_DevicesComboBox"
                     ItemsSource="{x:Bind Devices}"
                     IsEnabled="{x:Bind Disconnected, Mode=OneWay}"
-                    Header="Paired Bluetooth Serial Devices"
-                    PlaceholderText="Pick a paired Bluetooth Serial Device"
                     Width="Auto" SelectionChanged="DevicesComboBox_SelectionChanged"
                     ToolTipService.ToolTip="{x:Bind Device.Id, Mode=OneWay}">
                 </ComboBox>
-                <RelativePanel HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button
                         x:Name="RefreshButton"
                         Margin="8,8,0,0"
                         Click="RefreshButton_Click"
                         IsEnabled="{x:Bind Disconnected, Mode=OneWay}">
-                        <TextBlock Text="Refresh"></TextBlock>
+                        <TextBlock x:Uid="Main_RefreshButton"></TextBlock>
                     </Button>
                     <Button
                         x:Name="ConnectButton"
@@ -47,17 +46,17 @@
                         Margin="8,8,0,0"
                         Click="ConnectButton_Click"
                         IsEnabled="{x:Bind Disconnected, Mode=OneWay}">
-                        <TextBlock Text="Connect"></TextBlock>
+                        <TextBlock x:Uid="Main_ConnectButton"></TextBlock>
                     </Button>
                     <Button
                         x:Name="DisconnectButton"
                         RelativePanel.RightOf="ConnectButton"
                         Margin="8,8,0,0" Click="DisconnectButton_Click"
                         IsEnabled="{x:Bind Connected, Mode=OneWay}">
-                        <TextBlock Text="Disconnect"></TextBlock>
+                        <TextBlock x:Uid="Main_DisconnectButton"></TextBlock>
                     </Button>
-                </RelativePanel>
-                <TextBlock Text="Data to send - text sent as UTF-8"></TextBlock>
+                </StackPanel>
+                <TextBlock x:Uid="Main_SendTextBoxTitle"></TextBlock>
                 <TextBox
                     Name="SendTextBox"
                     Height="120"
@@ -65,27 +64,27 @@
                     TextWrapping="Wrap"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"></TextBox>
                 <CheckBox Name="SendTextBoxContainsHex">
-                    <TextBlock Text="Convert to binary - text is in hexadecimal"></TextBlock></CheckBox>
+                    <TextBlock x:Uid="Main_SendTextBoxContainsHex"></TextBlock></CheckBox>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Pick end of line" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock x:Uid="Main_PickEndOfLine" VerticalAlignment="Center"></TextBlock>
                     <RadioButton
                         Name="EndOfLineDos"
                         IsChecked="True"
                         Margin="8,0,0,0"
                         GroupName="EndOfLine">
-                        <TextBlock Text="DOS (Carriage return-Newline)"></TextBlock>
+                        <TextBlock x:Uid="Main_EndOfLineDos"></TextBlock>
                     </RadioButton>
                     <RadioButton
                         Name="EndOfLineMacOs"
                         Margin="8,0,0,0"
                         GroupName="EndOfLine">
-                        <TextBlock Text="macOS (Carriage return)"></TextBlock>
+                        <TextBlock x:Uid="Main_EndOfLineMacOs"></TextBlock>
                     </RadioButton>
                     <RadioButton
                         Name="EndOfLineUnix"
                         Margin="8,0,0,0"
                         GroupName="EndOfLine">
-                        <TextBlock Text="Unix (Newline)"></TextBlock>
+                        <TextBlock x:Uid="Main_EndOfLineUnix"></TextBlock>
                     </RadioButton>
                 </StackPanel>
                 <Button
@@ -94,9 +93,9 @@
                     Margin="0,8,0,0"
                     IsEnabled="{x:Bind Connected, Mode=OneWay}"
                     Click="SendButton_Click">
-                    <TextBlock Text="Send"></TextBlock>
+                    <TextBlock x:Uid="Main_SendButton"></TextBlock>
                 </Button>
-                <TextBlock Text="Data Received"></TextBlock>
+                <TextBlock x:Uid="Main_DataReceivedTextBoxTitle"></TextBlock>
                 <TextBox
                     Name="DataReceivedTextBox"
                     Height="Auto" MinHeight="120"
@@ -106,10 +105,10 @@
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     IsReadOnly="True"></TextBox>
                 <CheckBox Name="ShowReceivedDataInHex">
-                    <TextBlock Text="Show data in hexadecimal"></TextBlock>
+                    <TextBlock x:Uid="Main_ShowReceivedDataInHex"></TextBlock>
                 </CheckBox>
-                <Button HorizontalAlignment="Right" Margin="0,8,0,0" Click="Button_Click">
-                    <TextBlock Text="Clear"></TextBlock>
+                <Button HorizontalAlignment="Right" Margin="0,8,0,0" Click="ClearButton_Click">
+                    <TextBlock x:Uid="Main_ClearButton"></TextBlock>
                 </Button>
             </StackPanel>
         </Grid>

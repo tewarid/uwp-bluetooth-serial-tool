@@ -212,4 +212,64 @@
     <value>Ok</value>
     <comment>What's new prompt message primary button text</comment>
   </data>
+  <data name="Main_ClearButton.Text" xml:space="preserve">
+    <value>Clear</value>
+    <comment>ClearButton text</comment>
+  </data>
+  <data name="Main_ConnectButton.Text" xml:space="preserve">
+    <value>Connect</value>
+    <comment>ConnectButton text</comment>
+  </data>
+  <data name="Main_DataReceivedTextBoxTitle.Text" xml:space="preserve">
+    <value>Data Received</value>
+    <comment>DataReceivedTextBox title</comment>
+  </data>
+  <data name="Main_DevicesComboBox.Header" xml:space="preserve">
+    <value>Paired Bluetooth Serial Devices</value>
+    <comment>Header Devices ComboBox</comment>
+  </data>
+  <data name="Main_DevicesComboBox.PlaceholderText" xml:space="preserve">
+    <value>Pick a paired Bluetooth Serial Device</value>
+    <comment>PlaceholderText of Devices ComboBox</comment>
+  </data>
+  <data name="Main_DisconnectButton.Text" xml:space="preserve">
+    <value>Disconnect</value>
+    <comment>DisconnectButton text</comment>
+  </data>
+  <data name="Main_EndOfLineDos.Text" xml:space="preserve">
+    <value>DOS (Carriage return-Newline)</value>
+    <comment>DOS (Carriage return-Newline)</comment>
+  </data>
+  <data name="Main_EndOfLineMacOs.Text" xml:space="preserve">
+    <value>macOS (Carriage return)</value>
+    <comment>macOS (Carriage return)</comment>
+  </data>
+  <data name="Main_EndOfLineUnix.Text" xml:space="preserve">
+    <value>Unix (Newline)</value>
+    <comment>Unix (Newline)</comment>
+  </data>
+  <data name="Main_PickEndOfLIne.Text" xml:space="preserve">
+    <value>Pick end of line</value>
+    <comment>Pick end of line title</comment>
+  </data>
+  <data name="Main_RefreshButton.Text" xml:space="preserve">
+    <value>Refresh</value>
+    <comment>RefreshButton text</comment>
+  </data>
+  <data name="Main_SendButton.Text" xml:space="preserve">
+    <value>Send</value>
+    <comment>SendButton text</comment>
+  </data>
+  <data name="Main_SendTextBoxContainsHex.Text" xml:space="preserve">
+    <value>Convert to binary - text is in hexadecimal</value>
+    <comment>SendTextBoxContainsHex CheckBox text</comment>
+  </data>
+  <data name="Main_SendTextBoxTitle.Text" xml:space="preserve">
+    <value>Data to send - text sent as UTF-8</value>
+    <comment>SendTextBox title</comment>
+  </data>
+  <data name="Main_ShowReceivedDataInHex.Text" xml:space="preserve">
+    <value>Show data in hexadecimal</value>
+    <comment>Show data in hexadecimal</comment>
+  </data>
 </root>
