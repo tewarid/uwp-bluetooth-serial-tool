@@ -16,19 +16,34 @@ using Windows.UI.Xaml.Controls;
 
 namespace UwpBluetoothSerialTool.Views
 {
+    enum ConnectionStatus
+    {
+        Disconnected,
+        Connecting,
+        Connected
+    }
+
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
-        private bool connected;
+        private ConnectionStatus status;
+        private ConnectionStatus ConnectionStatus
+        {
+            get
+            {
+                return status;
+            }
+            set
+            {
+                Set<ConnectionStatus>(ref status, value);
+                OnPropertyChanged("Connected");
+                OnPropertyChanged("Disconnected");
+            }
+        }
         private bool Connected
         {
             get
             {
-                return connected;
-            }
-            set
-            {
-                Set<bool>(ref connected, value);
-                OnPropertyChanged("Disconnected");
+                return status == ConnectionStatus.Connected;
             }
         }
         private bool Disconnected
@@ -36,10 +51,6 @@ namespace UwpBluetoothSerialTool.Views
             get
             {
                 return !Connected;
-            }
-            set
-            {
-                Connected = !value;
             }
         }
         private ObservableCollection<Device> Devices = new ObservableCollection<Device>();
@@ -111,11 +122,16 @@ namespace UwpBluetoothSerialTool.Views
 
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void RefreshButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             RefreshDevices();
+            Device = null;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void DevicesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
@@ -124,14 +140,25 @@ namespace UwpBluetoothSerialTool.Views
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private async void ConnectButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            if (Connected)
+            if (ConnectionStatus != ConnectionStatus.Disconnected)
             {
                 return;
             }
+            ConnectionStatus = ConnectionStatus.Connecting;
             if (Device == null)
             {
+                ContentDialog noDeviceSelectedDialog = new ContentDialog()
+                {
+                    Title = "No Device selected",
+                    Content = "Pick a paired Bluetooth Serial Device.",
+                    CloseButtonText = "OK"
+                };
+                await noDeviceSelectedDialog.ShowAsync();
+                ConnectionStatus = ConnectionStatus.Disconnected;
                 return;
             }
             BluetoothDevice bluetoothDevice = await BluetoothDevice.FromIdAsync(Device.Id);
@@ -148,16 +175,19 @@ namespace UwpBluetoothSerialTool.Views
                     };
                     await noBluetoothDialog.ShowAsync();
                 }
+                ConnectionStatus = ConnectionStatus.Disconnected;
                 return;
             }
             var rfcommServices = await bluetoothDevice.GetRfcommServicesForIdAsync(RfcommServiceId.SerialPort, BluetoothCacheMode.Cached);
             if (rfcommServices.Services.Count == 0)
             {
+                ConnectionStatus = ConnectionStatus.Disconnected;
                 return;
             }
             RfcommDeviceService rfcommDeviceService = rfcommServices.Services[0];
             if (rfcommDeviceService.DeviceAccessInformation.CurrentStatus != DeviceAccessStatus.Allowed)
             {
+                ConnectionStatus = ConnectionStatus.Disconnected;
                 return;
             }
             socket = new StreamSocket();
@@ -176,15 +206,16 @@ namespace UwpBluetoothSerialTool.Views
                 await notAvailableDialog.ShowAsync();
                 socket.Dispose();
                 socket = null;
+                ConnectionStatus = ConnectionStatus.Disconnected;
                 return;
             }
-            Connected = true;
+            ConnectionStatus = ConnectionStatus.Connected;
             ReadLoop();
         }
 
         private async Task ReadLoop()
         {
-            if (socket == null)
+            if (!Connected || socket == null)
             {
                 return;
             }
@@ -230,6 +261,8 @@ namespace UwpBluetoothSerialTool.Views
             return sb.ToString();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void DisconnectButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             Disconnect();
@@ -237,26 +270,20 @@ namespace UwpBluetoothSerialTool.Views
 
         private void Disconnect()
         {
-            if (!Connected)
-            {
-                return;
-            }
-            if (socket == null)
+            if (!Connected || socket == null)
             {
                 return;
             }
             socket.Dispose();
             socket = null;
-            Connected = false;
+            ConnectionStatus = ConnectionStatus.Disconnected;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private async void SendButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            if (!Connected)
-            {
-                return;
-            }
-            if (socket == null)
+            if (!Connected || socket == null)
             {
                 return;
             }
@@ -316,6 +343,8 @@ namespace UwpBluetoothSerialTool.Views
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void ClearButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             DataReceivedTextBox.Text = string.Empty;
