@@ -111,6 +111,36 @@
                     <TextBlock x:Uid="Main_ClearButton"></TextBlock>
                 </Button>
             </StackPanel>
+            <ContentDialog
+                x:Name="NoDeviceSelectedContentDialog"
+                Title = "No Device selected"
+                Content = "Pick a paired Bluetooth Serial Device."
+                CloseButtonText = "OK">
+            </ContentDialog>
+            <ContentDialog
+                x:Name="NoBluetoothContentDialog"
+                Title = "No Bluetooth access"
+                Content = "Allow the app to access Bluetooth and try again."
+                CloseButtonText = "OK">
+            </ContentDialog>
+            <ContentDialog
+                x:Name="DeviceNotAvailableContentDialog"
+                Title = "Could not connect to device"
+                Content = "Check that the device is available and not in use."
+                CloseButtonText = "OK">
+            </ContentDialog>
+            <ContentDialog
+                x:Name="InvalidHexContentDialog"
+                Title = "Invalid hexadecimal data"
+                Content = "Check that the hexadecimal sequence does not contain invalid characters."
+                CloseButtonText = "OK">
+            </ContentDialog>
+            <ContentDialog
+                x:Name="SendFailedContentDialog"
+                Title = "Could not send data to device"
+                Content = "Check that the device is available and not in use."
+                CloseButtonText = "OK">
+            </ContentDialog>
         </Grid>
     </Grid>
 </Page>

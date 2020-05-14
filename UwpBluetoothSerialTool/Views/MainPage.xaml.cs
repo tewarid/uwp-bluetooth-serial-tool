@@ -151,13 +151,7 @@ namespace UwpBluetoothSerialTool.Views
             ConnectionStatus = ConnectionStatus.Connecting;
             if (Device == null)
             {
-                ContentDialog noDeviceSelectedDialog = new ContentDialog()
-                {
-                    Title = "No Device selected",
-                    Content = "Pick a paired Bluetooth Serial Device.",
-                    CloseButtonText = "OK"
-                };
-                await noDeviceSelectedDialog.ShowAsync();
+                await NoDeviceSelectedContentDialog.ShowAsync();
                 ConnectionStatus = ConnectionStatus.Disconnected;
                 return;
             }
@@ -167,13 +161,7 @@ namespace UwpBluetoothSerialTool.Views
                 DeviceAccessStatus accessStatus = DeviceAccessInformation.CreateFromId(Device.Id).CurrentStatus;
                 if (accessStatus == DeviceAccessStatus.DeniedByUser)
                 {
-                    ContentDialog noBluetoothDialog = new ContentDialog()
-                    {
-                        Title = "No Bluetooth access",
-                        Content = "Allow the app to access Bluetooth and try again.",
-                        CloseButtonText = "OK"
-                    };
-                    await noBluetoothDialog.ShowAsync();
+                    await NoBluetoothContentDialog.ShowAsync();
                 }
                 ConnectionStatus = ConnectionStatus.Disconnected;
                 return;
@@ -197,13 +185,7 @@ namespace UwpBluetoothSerialTool.Views
             }
             catch
             {
-                ContentDialog notAvailableDialog = new ContentDialog()
-                {
-                    Title = "Could not connect to device",
-                    Content = "Check that the device is available and not in use.",
-                    CloseButtonText = "OK"
-                };
-                await notAvailableDialog.ShowAsync();
+                await DeviceNotAvailableContentDialog.ShowAsync();
                 socket.Dispose();
                 socket = null;
                 ConnectionStatus = ConnectionStatus.Disconnected;
@@ -294,12 +276,7 @@ namespace UwpBluetoothSerialTool.Views
                 MemoryStream memoryStream = new MemoryStream();
                 if (HexToBin.DefaultInstance.Convert(new StringReader(text), memoryStream) == -1)
                 {
-                    ContentDialog notAvailableDialog = new ContentDialog()
-                    {
-                        Title = "Invalid hexadecimal data",
-                        Content = "Check that the hexadecimal sequence does not contain invalid characters.",
-                        CloseButtonText = "OK"
-                    };
+                    await InvalidHexContentDialog.ShowAsync();
                     return;
                 }
                 data = memoryStream.ToArray();
@@ -331,13 +308,7 @@ namespace UwpBluetoothSerialTool.Views
                 }
                 catch
                 {
-                    ContentDialog notAvailableDialog = new ContentDialog()
-                    {
-                        Title = "Could not send data to device",
-                        Content = "Check that the device is available and not in use.",
-                        CloseButtonText = "OK"
-                    };
-                    await notAvailableDialog.ShowAsync();
+                    await SendFailedContentDialog.ShowAsync();
                     Disconnect();
                 }
             }
