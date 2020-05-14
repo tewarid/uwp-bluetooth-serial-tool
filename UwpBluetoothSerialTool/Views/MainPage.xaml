@@ -113,33 +113,26 @@
             </StackPanel>
             <ContentDialog
                 x:Name="NoDeviceSelectedContentDialog"
-                Title = "No Device selected"
-                Content = "Pick a paired Bluetooth Serial Device."
-                CloseButtonText = "OK">
+                x:Uid="Main_NoDeviceSelectedContentDialog">
             </ContentDialog>
             <ContentDialog
                 x:Name="NoBluetoothContentDialog"
-                Title = "No Bluetooth access"
-                Content = "Allow the app to access Bluetooth and try again."
-                CloseButtonText = "OK">
+                x:Uid="Main_NoBluetoothContentDialog">
             </ContentDialog>
             <ContentDialog
                 x:Name="DeviceNotAvailableContentDialog"
-                Title = "Could not connect to device"
-                Content = "Check that the device is available and not in use."
-                CloseButtonText = "OK">
+                x:Uid="Main_DeviceNotAvailableContentDialog">
             </ContentDialog>
             <ContentDialog
                 x:Name="InvalidHexContentDialog"
+                x:Uid="Main_InvalidHexContentDialog"
                 Title = "Invalid hexadecimal data"
                 Content = "Check that the hexadecimal sequence does not contain invalid characters."
                 CloseButtonText = "OK">
             </ContentDialog>
             <ContentDialog
                 x:Name="SendFailedContentDialog"
-                Title = "Could not send data to device"
-                Content = "Check that the device is available and not in use."
-                CloseButtonText = "OK">
+                x:Uid="Main_SendFailedContentDialog">
             </ContentDialog>
         </Grid>
     </Grid>

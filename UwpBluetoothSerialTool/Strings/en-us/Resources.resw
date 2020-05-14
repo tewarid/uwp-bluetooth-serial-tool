@@ -273,4 +273,64 @@
     <value>Show data in hexadecimal</value>
     <comment>Show data in hexadecimal</comment>
   </data>
+  <data name="Main_DeviceNotAvailableContentDialog.CloseButtonText" xml:space="preserve">
+    <value>Ok</value>
+    <comment>Ok</comment>
+  </data>
+  <data name="Main_DeviceNotAvailableContentDialog.Content" xml:space="preserve">
+    <value>Check that the device is available and not in use.</value>
+    <comment>Check that the device is available and not in use.</comment>
+  </data>
+  <data name="Main_DeviceNotAvailableContentDialog.Title" xml:space="preserve">
+    <value>Could not connect to device</value>
+    <comment>Could not connect to device</comment>
+  </data>
+  <data name="Main_InvalidHexContentDialog.CloseButtonText" xml:space="preserve">
+    <value>Ok</value>
+    <comment>Ok</comment>
+  </data>
+  <data name="Main_InvalidHexContentDialog.Content" xml:space="preserve">
+    <value>Check that the hexadecimal sequence does not contain invalid characters.</value>
+    <comment>Check that the hexadecimal sequence does not contain invalid characters.</comment>
+  </data>
+  <data name="Main_InvalidHexContentDialog.Title" xml:space="preserve">
+    <value>Invalid hexadecimal data</value>
+    <comment>Invalid hexadecimal data</comment>
+  </data>
+  <data name="Main_NoBluetoothContentDialog.CloseButtonText" xml:space="preserve">
+    <value>Ok</value>
+    <comment>Ok</comment>
+  </data>
+  <data name="Main_NoBluetoothContentDialog.Content" xml:space="preserve">
+    <value>Allow the app to access Bluetooth and try again.</value>
+    <comment>Allow the app to access Bluetooth and try again.</comment>
+  </data>
+  <data name="Main_NoBluetoothContentDialog.Title" xml:space="preserve">
+    <value>No Bluetooth access</value>
+    <comment>No Bluetooth access</comment>
+  </data>
+  <data name="Main_NoDeviceSelectedContentDialog.CloseButtonText" xml:space="preserve">
+    <value>Ok</value>
+    <comment>Ok</comment>
+  </data>
+  <data name="Main_NoDeviceSelectedContentDialog.Content" xml:space="preserve">
+    <value>Pick a paired Bluetooth Serial Device.</value>
+    <comment>Pick a paired Bluetooth Serial Device.</comment>
+  </data>
+  <data name="Main_NoDeviceSelectedContentDialog.Title" xml:space="preserve">
+    <value>No Device selected</value>
+    <comment>No Device selected</comment>
+  </data>
+  <data name="Main_SendFailedContentDialog.CloseButtonText" xml:space="preserve">
+    <value>Ok</value>
+    <comment>Ok</comment>
+  </data>
+  <data name="Main_SendFailedContentDialog.Content" xml:space="preserve">
+    <value>Check that the device is available and not in use.</value>
+    <comment>Check that the device is available and not in use.</comment>
+  </data>
+  <data name="Main_SendFailedContentDialog.Title" xml:space="preserve">
+    <value>Could not send data to device</value>
+    <comment>Could not send data to device</comment>
+  </data>
 </root>
