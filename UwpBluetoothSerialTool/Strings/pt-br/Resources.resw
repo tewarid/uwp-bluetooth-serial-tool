@@ -186,7 +186,7 @@
 
 - Conectar-se a um dispositivo serial Bluetooth emparelhado
 - Enviar texto ou binário
-- Escolher uma linha que termina para o texto
+- Escolher um término de linha para o texto
 - Receber texto ou binário
 - Executar várias instâncias do aplicativo para se comunicar com outros dispositivos
 - Consultar o código-fonte e relatar problemas em https://github.com/tewarid/uwp-bluetooth-serial-tool</value>
