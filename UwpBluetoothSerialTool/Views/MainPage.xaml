@@ -134,6 +134,10 @@
                 x:Name="SendFailedContentDialog"
                 x:Uid="Main_SendFailedContentDialog">
             </ContentDialog>
+            <ContentDialog
+                x:Name="ReadFailedContentDialog"
+                x:Uid="Main_ReadFailedContentDialog">
+            </ContentDialog>
         </Grid>
     </Grid>
 </Page>

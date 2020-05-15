@@ -333,4 +333,16 @@
     <value>Could not send data to device</value>
     <comment>Could not send data to device</comment>
   </data>
+  <data name="Main_ReadFailedContentDialog.CloseButtonText" xml:space="preserve">
+    <value>Ok</value>
+    <comment>Ok</comment>
+  </data>
+  <data name="Main_ReadFailedContentDialog.Content" xml:space="preserve">
+    <value>Check that the device is available and not in use.</value>
+    <comment>Check that the device is available and not in use.</comment>
+  </data>
+  <data name="Main_ReadFailedContentDialog.Title" xml:space="preserve">
+    <value>Unable to read data from device</value>
+    <comment>Unable to read data from device</comment>
+  </data>
 </root>

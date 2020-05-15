@@ -230,6 +230,12 @@ namespace UwpBluetoothSerialTool.Views
                     DataReceivedTextBox.Text = DataReceivedTextBox.Text.Insert(DataReceivedTextBox.Text.Length, text);
                 }
             }
+            else
+            {
+                await ReadFailedContentDialog.ShowAsync();
+                Disconnect();
+                return;
+            }
             ReadLoop();
         }
 
