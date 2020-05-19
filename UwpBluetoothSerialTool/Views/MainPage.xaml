@@ -39,25 +39,25 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button
                         x:Name="RefreshButton"
+                        x:Uid="Main_RefreshButton"
                         Margin="8,8,0,0"
                         Click="RefreshButton_Click"
                         IsEnabled="{x:Bind Disconnected, Mode=OneWay}">
-                        <TextBlock x:Uid="Main_RefreshButton"></TextBlock>
                     </Button>
                     <Button
                         x:Name="ConnectButton"
+                        x:Uid="Main_ConnectButton"
                         RelativePanel.RightOf="RefreshButton"
                         Margin="8,8,0,0"
                         Click="ConnectButton_Click"
                         IsEnabled="{x:Bind Disconnected, Mode=OneWay}">
-                        <TextBlock x:Uid="Main_ConnectButton"></TextBlock>
                     </Button>
                     <Button
                         x:Name="DisconnectButton"
+                        x:Uid="Main_DisconnectButton"
                         RelativePanel.RightOf="ConnectButton"
                         Margin="8,8,0,0" Click="DisconnectButton_Click"
                         IsEnabled="{x:Bind Connected, Mode=OneWay}">
-                        <TextBlock x:Uid="Main_DisconnectButton"></TextBlock>
                     </Button>
                 </StackPanel>
                 <TextBlock x:Uid="Main_SendTextBoxTitle"></TextBlock>
@@ -67,37 +67,37 @@
                     AcceptsReturn="True"
                     TextWrapping="Wrap"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"></TextBox>
-                <CheckBox Name="SendTextBoxContainsHex">
-                    <TextBlock x:Uid="Main_SendTextBoxContainsHex"></TextBlock></CheckBox>
+                <CheckBox Name="SendTextBoxContainsHex" x:Uid="Main_SendTextBoxContainsHex">
+                </CheckBox>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Uid="Main_PickEndOfLine" VerticalAlignment="Center"></TextBlock>
                     <RadioButton
                         Name="EndOfLineDos"
+                        x:Uid="Main_EndOfLineDos"
                         IsChecked="True"
                         Margin="8,0,0,0"
                         GroupName="EndOfLine">
-                        <TextBlock x:Uid="Main_EndOfLineDos"></TextBlock>
                     </RadioButton>
                     <RadioButton
                         Name="EndOfLineMacOs"
+                        x:Uid="Main_EndOfLineMacOs"
                         Margin="8,0,0,0"
                         GroupName="EndOfLine">
-                        <TextBlock x:Uid="Main_EndOfLineMacOs"></TextBlock>
                     </RadioButton>
                     <RadioButton
                         Name="EndOfLineUnix"
+                        x:Uid="Main_EndOfLineUnix"
                         Margin="8,0,0,0"
                         GroupName="EndOfLine">
-                        <TextBlock x:Uid="Main_EndOfLineUnix"></TextBlock>
                     </RadioButton>
                 </StackPanel>
                 <Button
                     Name="SendButton"
+                    x:Uid="Main_SendButton"
                     HorizontalAlignment="Right"
                     Margin="0,8,0,0"
                     IsEnabled="{x:Bind Connected, Mode=OneWay}"
                     Click="SendButton_Click">
-                    <TextBlock x:Uid="Main_SendButton"></TextBlock>
                 </Button>
                 <TextBlock x:Uid="Main_DataReceivedTextBoxTitle"></TextBlock>
                 <TextBox
@@ -108,11 +108,9 @@
                     TextWrapping="Wrap"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     IsReadOnly="True"></TextBox>
-                <CheckBox Name="ShowReceivedDataInHex">
-                    <TextBlock x:Uid="Main_ShowReceivedDataInHex"></TextBlock>
+                <CheckBox Name="ShowReceivedDataInHex" x:Uid="Main_ShowReceivedDataInHex">
                 </CheckBox>
-                <Button HorizontalAlignment="Right" Margin="0,8,0,0" Click="ClearButton_Click">
-                    <TextBlock x:Uid="Main_ClearButton"></TextBlock>
+                <Button x:Uid="Main_ClearButton" HorizontalAlignment="Right" Margin="0,8,0,0" Click="ClearButton_Click">
                 </Button>
             </StackPanel>
             <ContentDialog

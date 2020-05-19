@@ -213,11 +213,11 @@
     <value>Ok</value>
     <comment>What's new prompt message primary button text</comment>
   </data>
-  <data name="Main_ClearButton.Text" xml:space="preserve">
+  <data name="Main_ClearButton.Content" xml:space="preserve">
     <value>Limpar</value>
     <comment>ClearButton text</comment>
   </data>
-  <data name="Main_ConnectButton.Text" xml:space="preserve">
+  <data name="Main_ConnectButton.Content" xml:space="preserve">
     <value>Conectar</value>
     <comment>ConnectButton text</comment>
   </data>
@@ -233,19 +233,19 @@
     <value>Escolha um dispositivo serial Bluetooth emparelhado</value>
     <comment>PlaceholderText of Devices ComboBox</comment>
   </data>
-  <data name="Main_DisconnectButton.Text" xml:space="preserve">
+  <data name="Main_DisconnectButton.Content" xml:space="preserve">
     <value>Desconectar</value>
     <comment>DisconnectButton text</comment>
   </data>
-  <data name="Main_EndOfLineDos.Text" xml:space="preserve">
+  <data name="Main_EndOfLineDos.Content" xml:space="preserve">
     <value>DOS (Retorno de carro-Nova Linha)</value>
     <comment>DOS (Carriage return-Newline)</comment>
   </data>
-  <data name="Main_EndOfLineMacOs.Text" xml:space="preserve">
+  <data name="Main_EndOfLineMacOs.Content" xml:space="preserve">
     <value>macOS (Retorno de carro)</value>
     <comment>macOS (Carriage return)</comment>
   </data>
-  <data name="Main_EndOfLineUnix.Text" xml:space="preserve">
+  <data name="Main_EndOfLineUnix.Content" xml:space="preserve">
     <value>Unix (Nova linha)</value>
     <comment>Unix (Newline)</comment>
   </data>
@@ -253,15 +253,15 @@
     <value>Escolha o fim da linha</value>
     <comment>Pick end of line title</comment>
   </data>
-  <data name="Main_RefreshButton.Text" xml:space="preserve">
+  <data name="Main_RefreshButton.Content" xml:space="preserve">
     <value>Atualizar</value>
     <comment>RefreshButton text</comment>
   </data>
-  <data name="Main_SendButton.Text" xml:space="preserve">
+  <data name="Main_SendButton.Content" xml:space="preserve">
     <value>Enviar</value>
     <comment>SendButton text</comment>
   </data>
-  <data name="Main_SendTextBoxContainsHex.Text" xml:space="preserve">
+  <data name="Main_SendTextBoxContainsHex.Content" xml:space="preserve">
     <value>Converter para binário - o texto está em hexadecimal</value>
     <comment>SendTextBoxContainsHex CheckBox text</comment>
   </data>
@@ -269,7 +269,7 @@
     <value>Dados a enviar - o texto será enviado como UTF-8</value>
     <comment>SendTextBox title</comment>
   </data>
-  <data name="Main_ShowReceivedDataInHex.Text" xml:space="preserve">
+  <data name="Main_ShowReceivedDataInHex.Content" xml:space="preserve">
     <value>Mostrar dados em hexadecimal</value>
     <comment>Show data in hexadecimal</comment>
   </data>
