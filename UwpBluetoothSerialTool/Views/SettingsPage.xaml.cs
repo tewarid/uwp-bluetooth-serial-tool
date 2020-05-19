@@ -85,5 +85,10 @@ namespace UwpBluetoothSerialTool.Views
         }
 
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private void ClosePaneAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.GoBack();
+        }
     }
 }

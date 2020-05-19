@@ -25,6 +25,9 @@
         <StackPanel
             Grid.Row="1"
             x:Name="ContentArea">
+            <CommandBar Background="Transparent" OverflowButtonVisibility="Collapsed">
+                <AppBarButton Icon="Cancel" Click="ClosePaneAppBarButton_Click"></AppBarButton>
+            </CommandBar>
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_Theme" />
@@ -72,7 +75,7 @@
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{ThemeResource BodyTextBlockStyle}" />
 
-                <HyperlinkButton x:Uid="Settings_PrivacyTermsLink" Margin="{StaticResource XSmallTopMargin}" />
+                <HyperlinkButton x:Uid="Settings_PrivacyTermsLink" Margin="{StaticResource XSmallTopMargin}" Visibility="Collapsed" />
             </StackPanel>
         </StackPanel>
     </Grid>

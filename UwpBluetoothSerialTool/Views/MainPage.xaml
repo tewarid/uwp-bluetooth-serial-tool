@@ -24,6 +24,10 @@
                 Place your content here.
             -->
             <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+                <CommandBar Background="Transparent" OverflowButtonVisibility="Collapsed">
+                    <AppBarButton Icon="Setting" Click="SettingsAppBarButton_Click">
+                    </AppBarButton>
+                </CommandBar>
                 <ComboBox
                     x:Name="DevicesComboBox"
                     x:Uid="Main_DevicesComboBox"

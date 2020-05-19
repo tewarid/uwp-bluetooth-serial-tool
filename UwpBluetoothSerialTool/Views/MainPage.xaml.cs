@@ -13,6 +13,7 @@ using Windows.Devices.Enumeration;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace UwpBluetoothSerialTool.Views
 {
@@ -71,6 +72,7 @@ namespace UwpBluetoothSerialTool.Views
 
         public MainPage()
         {
+            NavigationCacheMode = NavigationCacheMode.Required;
             InitializeComponent();
             RefreshDevices();
         }
@@ -325,6 +327,11 @@ namespace UwpBluetoothSerialTool.Views
         private void ClearButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             DataReceivedTextBox.Text = string.Empty;
+        }
+
+        private void SettingsAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SettingsPage));
         }
     }
 }
