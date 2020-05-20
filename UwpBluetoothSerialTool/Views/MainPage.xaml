@@ -4,8 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:UwpBluetoothSerialTool.Core.Models"
+    xmlns:views="using:UwpBluetoothSerialTool.Views"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+    <Page.Resources>
+        <views:MessageDirectionToAlignmentConverter x:Key="MessageDirectionToAlignment"></views:MessageDirectionToAlignmentConverter>
+    </Page.Resources>
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
@@ -25,6 +30,16 @@
             -->
             <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
                 <CommandBar Background="Transparent" OverflowButtonVisibility="Collapsed">
+                    <AppBarButton Icon="Delete" IsEnabled="{x:Bind Connected, Mode=OneWay}">
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <TextBlock x:Uid="Main_DeleteFlyoutConfirmation" Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,12" />
+                                    <Button x:Uid="Main_DeleteFlyoutButton" Click="ClearButton_Click" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </AppBarButton>
                     <AppBarButton Icon="Setting" Click="SettingsAppBarButton_Click">
                     </AppBarButton>
                 </CommandBar>
@@ -60,10 +75,51 @@
                         IsEnabled="{x:Bind Connected, Mode=OneWay}">
                     </Button>
                 </StackPanel>
+                <TextBlock x:Uid="Main_MessagesListViewTitle"></TextBlock>
+                <ListView
+                    x:Name="MessagesListView"
+                    ItemsSource="{x:Bind Device.Messages, Mode=OneWay}"
+                    Height="Auto"
+                    MinHeight="120"
+                    MaxHeight="240"
+                    SelectionMode="Single"
+                    ScrollViewer.VerticalScrollMode="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    BorderThickness="2"
+                    BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                    KeyDown="MessagesListView_KeyDown">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Message">
+                            <Grid Height="Auto" Margin="4">
+                                <StackPanel
+                                    Width="400" Padding="10, 0, 0, 10" CornerRadius="4"
+                                    Background="{ThemeResource SystemBaseLowColor}"
+                                    HorizontalAlignment="{x:Bind Direction, Converter={StaticResource MessageDirectionToAlignment}}">
+                                    <TextBlock Text="{x:Bind Text}" Padding="0, 10, 0, 0" TextWrapping="Wrap" />
+                                    <TextBlock Text="{x:Bind Hexadecimal}" Padding="0, 5, 0, 5" TextWrapping="Wrap" FontFamily="Consolas" />
+                                    <TextBlock Text="{x:Bind DateCreated}" Padding="0, 0, 0, 10" FontSize="11" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel
+                                ItemsUpdatingScrollMode="KeepLastItemInView" 
+                                VerticalAlignment="Bottom"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
                 <TextBlock x:Uid="Main_SendTextBoxTitle"></TextBlock>
                 <TextBox
                     Name="SendTextBox"
-                    Height="120"
+                    Height="Auto"
+                    MaxHeight="120"
                     AcceptsReturn="True"
                     TextWrapping="Wrap"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"></TextBox>
@@ -98,19 +154,6 @@
                     Margin="0,8,0,0"
                     IsEnabled="{x:Bind Connected, Mode=OneWay}"
                     Click="SendButton_Click">
-                </Button>
-                <TextBlock x:Uid="Main_DataReceivedTextBoxTitle"></TextBlock>
-                <TextBox
-                    Name="DataReceivedTextBox"
-                    Height="Auto" MinHeight="120"
-                    MaxHeight="240"
-                    AcceptsReturn="True"
-                    TextWrapping="Wrap"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    IsReadOnly="True"></TextBox>
-                <CheckBox Name="ShowReceivedDataInHex" x:Uid="Main_ShowReceivedDataInHex">
-                </CheckBox>
-                <Button x:Uid="Main_ClearButton" HorizontalAlignment="Right" Margin="0,8,0,0" Click="ClearButton_Click">
                 </Button>
             </StackPanel>
             <ContentDialog

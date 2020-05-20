@@ -7,12 +7,17 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using UwpBluetoothSerialTool.Core.Models;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.Rfcomm;
 using Windows.Devices.Enumeration;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
+using Windows.System;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 namespace UwpBluetoothSerialTool.Views
@@ -88,24 +93,25 @@ namespace UwpBluetoothSerialTool.Views
                 collection = await DeviceInformation.FindAllAsync(aqsFilter, requestedProperties);
             }).Wait();
             Devices.Clear();
-            foreach (var device in collection)
+            foreach (var deviceInfo in collection)
             {
-                string name = device.Name;
+                string name = deviceInfo.Name;
                 Task.Run(async () =>
                 {
-                    BluetoothDevice btDevice = await BluetoothDevice.FromIdAsync(device.Id);
+                    BluetoothDevice btDevice = await BluetoothDevice.FromIdAsync(deviceInfo.Id);
                     if (btDevice != null)
                     {
                         name = btDevice.Name;
                     }
                 }).Wait();
-                Devices.Add(new Device()
+                Device device = new Device()
                 {
                     Name = name,
-                    Id = device.Id,
-                    VendorId = (UInt16)device.Properties["System.DeviceInterface.Bluetooth.VendorId"],
-                    ProductId = (UInt16)device.Properties["System.DeviceInterface.Bluetooth.ProductId"]
-                }); ;
+                    Id = deviceInfo.Id,
+                    VendorId = (UInt16)deviceInfo.Properties["System.DeviceInterface.Bluetooth.VendorId"],
+                    ProductId = (UInt16)deviceInfo.Properties["System.DeviceInterface.Bluetooth.ProductId"]
+                };
+                Devices.Add(device);
             }
         }
 
@@ -219,17 +225,8 @@ namespace UwpBluetoothSerialTool.Views
                 {
                     dataReader.ReadBytes(data);
                     string text;
-                    if (ShowReceivedDataInHex.IsChecked == true)
-                    {
-                        text = BinaryToHex(data);
-                    }
-                    else
-                    {
-                        text = Encoding.UTF8.GetString(data);
-                    }
-                    text += Environment.NewLine;
-                    text += Environment.NewLine;
-                    DataReceivedTextBox.Text = DataReceivedTextBox.Text.Insert(DataReceivedTextBox.Text.Length, text);
+                    Message message = new Message(MessageDirection.Receive, data);
+                    device.Messages.Add(message);
                 }
             }
             else
@@ -239,16 +236,6 @@ namespace UwpBluetoothSerialTool.Views
                 return;
             }
             ReadLoop();
-        }
-
-        private string BinaryToHex(byte[] data)
-        {
-            StringBuilder sb = new StringBuilder(data.Length);
-            for (int i = 0; i < data.Length; i++)
-            {
-                sb.Append(string.Format("{0:X2} ", data[i]));
-            }
-            return sb.ToString();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
@@ -313,6 +300,8 @@ namespace UwpBluetoothSerialTool.Views
                 try
                 {
                     await socket.OutputStream.WriteAsync(buffer);
+                    Message message = new Message(MessageDirection.Send, data);
+                    device.Messages.Add(message);
                 }
                 catch
                 {
@@ -326,12 +315,32 @@ namespace UwpBluetoothSerialTool.Views
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void ClearButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            DataReceivedTextBox.Text = string.Empty;
+            Device.Messages.Clear();
         }
 
         private void SettingsAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             Frame.Navigate(typeof(SettingsPage));
+        }
+
+        private static bool IsControlKeyPressed()
+        {
+            var ctrlState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control);
+            return (ctrlState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
+        }
+
+        private void MessagesListView_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.C && IsControlKeyPressed())
+            {
+                if (MessagesListView.SelectedItem != null)
+                {
+                    Message selectedMessage = (Message)MessagesListView.SelectedItem;
+                    DataPackage dataPackage = new DataPackage();
+                    dataPackage.SetText(selectedMessage.Hexadecimal);
+                    Clipboard.SetContent(dataPackage);
+                }
+            }
         }
     }
 }

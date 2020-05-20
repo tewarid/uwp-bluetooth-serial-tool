@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace UwpBluetoothSerialTool.Core.Models
@@ -10,6 +11,7 @@ namespace UwpBluetoothSerialTool.Core.Models
         public string Name { get; set; }
         public UInt16 VendorId { get; set; }
         public UInt16 ProductId { get; set; }
+        public ObservableCollection<Message> Messages { get; private set; } = new ObservableCollection<Message>();
 
         public override string ToString()
         {

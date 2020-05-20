@@ -213,17 +213,13 @@
     <value>Ok</value>
     <comment>What's new prompt message primary button text</comment>
   </data>
-  <data name="Main_ClearButton.Content" xml:space="preserve">
-    <value>Limpar</value>
-    <comment>ClearButton text</comment>
-  </data>
   <data name="Main_ConnectButton.Content" xml:space="preserve">
     <value>Conectar</value>
     <comment>ConnectButton text</comment>
   </data>
-  <data name="Main_DataReceivedTextBoxTitle.Text" xml:space="preserve">
-    <value>Dados Recebidos</value>
-    <comment>DataReceivedTextBox title</comment>
+  <data name="Main_MessagesListViewTitle.Text" xml:space="preserve">
+    <value>Mensagens</value>
+    <comment>MessagesListView title</comment>
   </data>
   <data name="Main_DevicesComboBox.Header" xml:space="preserve">
     <value>Dispositivos seriais Bluetooth emparelhados</value>
@@ -262,16 +258,12 @@
     <comment>SendButton text</comment>
   </data>
   <data name="Main_SendTextBoxContainsHex.Content" xml:space="preserve">
-    <value>Converter para binário - o texto está em hexadecimal</value>
+    <value>Converter hexadecimal para binário</value>
     <comment>SendTextBoxContainsHex CheckBox text</comment>
   </data>
   <data name="Main_SendTextBoxTitle.Text" xml:space="preserve">
-    <value>Dados a enviar - o texto será enviado como UTF-8</value>
+    <value>Enviar mensagem</value>
     <comment>SendTextBox title</comment>
-  </data>
-  <data name="Main_ShowReceivedDataInHex.Content" xml:space="preserve">
-    <value>Mostrar dados em hexadecimal</value>
-    <comment>Show data in hexadecimal</comment>
   </data>
   <data name="Main_DeviceNotAvailableContentDialog.CloseButtonText" xml:space="preserve">
     <value>Ok</value>
@@ -344,5 +336,13 @@
   <data name="Main_ReadFailedContentDialog.Title" xml:space="preserve">
     <value>Não foi possível ler os dados do dispositivo</value>
     <comment>Unable to read data from device</comment>
+  </data>
+  <data name="Main_DeleteFlyoutButton.Content" xml:space="preserve">
+    <value>Sim, esvazie meu histórico de mensagens</value>
+    <comment>DeleteFlyout button text</comment>
+  </data>
+  <data name="Main_DeleteFlyoutConfirmation.Text" xml:space="preserve">
+    <value>Todas as mensagens serão removidas. Você deseja continuar?</value>
+    <comment>DeleteFlyout confirmation</comment>
   </data>
 </root>
