@@ -12,7 +12,7 @@
   <Identity
     Name="23413DevendraTewari.BluetoothSerialTool"
     Publisher="CN=45EE7F3F-ED2B-45A2-91C7-7AC934F26DC4"
-    Version="1.0.5.0" />
+    Version="1.0.7.0" />
 
   <mp:PhoneIdentity PhoneProductId="8ed14400-c5d2-49c6-a552-3d212caa8e8f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
