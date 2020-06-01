@@ -174,18 +174,14 @@ namespace UwpBluetoothSerialTool.Views
             {
                 return;
             }
-            string name = deviceInfo.Name;
-            BluetoothDevice btDevice = await BluetoothDevice.FromIdAsync(deviceInfo.Id);
-            if (btDevice != null)
-            {
-                name = btDevice.Name;
-            }
+            deviceInfo.Properties.TryGetValue(VendorIdProperty, out object vendorId);
+            deviceInfo.Properties.TryGetValue(ProductIdProperty, out object productId);
             Device device = new Device()
             {
-                Name = name,
+                Name = deviceInfo.Name,
                 Id = deviceInfo.Id,
-                VendorId = (ushort)deviceInfo.Properties[VendorIdProperty],
-                ProductId = (ushort)deviceInfo.Properties[ProductIdProperty]
+                VendorId = (ushort)(vendorId ?? (ushort)0) ,
+                ProductId = (ushort)(productId ?? (ushort)0)
             };
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
