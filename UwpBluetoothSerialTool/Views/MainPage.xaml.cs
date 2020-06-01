@@ -3,6 +3,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,6 @@ using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
@@ -31,91 +31,21 @@ namespace UwpBluetoothSerialTool.Views
 
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
-        private ConnectionStatus status;
-        private ConnectionStatus ConnectionStatus
-        {
-            get
-            {
-                return status;
-            }
-            set
-            {
-                Set<ConnectionStatus>(ref status, value);
-                OnPropertyChanged("Connected");
-                OnPropertyChanged("Disconnected");
-            }
-        }
-        private bool Connected
-        {
-            get
-            {
-                return status == ConnectionStatus.Connected;
-            }
-        }
-        private bool Disconnected
-        {
-            get
-            {
-                return !Connected;
-            }
-        }
-        private ObservableCollection<Device> Devices = new ObservableCollection<Device>();
-        private Device device;
-        private Device Device
-        {
-            get
-            {
-                return device;
-            }
-            set
-            {
-                Set<Device>(ref device, value);
-            }
-        }
-        private StreamSocket socket;
-        private IBuffer readBuffer = new Windows.Storage.Streams.Buffer(1024);
+        static string AqsFilter { get; set; } = BluetoothDevice.GetDeviceSelector(); // could also
+        // set this to RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort) but
+        // the DeviceWatcher.Removed does not fire then
 
-        public MainPage()
+        static string VendorIdProperty { get; set; } = "System.DeviceInterface.Bluetooth.VendorId";
+        static string ProductIdProperty { get; set; } = "System.DeviceInterface.Bluetooth.ProductId";
+        static string AepProtocolIdProperty { get; set; } = "System.Devices.Aep.ProtocolId";
+        static Guid BluetoothSerialProtocolId = new Guid("{E0CBF06C-CD8B-4647-BB8A-263B43F0F974}");
+        string[] RequestedProperties { get; set; } = new string[]
         {
-            NavigationCacheMode = NavigationCacheMode.Required;
-            InitializeComponent();
-            RefreshDevices();
-        }
-
-        private void RefreshDevices()
-        {
-            string aqsFilter = RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort);
-            string[] requestedProperties = new string[] { "System.DeviceInterface.Bluetooth.ProductId",
-                "System.DeviceInterface.Bluetooth.VendorId", "System.DeviceInterface.Bluetooth.DeviceAddress" };
-            DeviceInformationCollection collection = null;
-            Task.Run(async () =>
-            {
-                collection = await DeviceInformation.FindAllAsync(aqsFilter, requestedProperties);
-            }).Wait();
-            Devices.Clear();
-            foreach (var deviceInfo in collection)
-            {
-                string name = deviceInfo.Name;
-                Task.Run(async () =>
-                {
-                    BluetoothDevice btDevice = await BluetoothDevice.FromIdAsync(deviceInfo.Id);
-                    if (btDevice != null)
-                    {
-                        name = btDevice.Name;
-                    }
-                }).Wait();
-                Device device = new Device()
-                {
-                    Name = name,
-                    Id = deviceInfo.Id,
-                    VendorId = (UInt16)deviceInfo.Properties["System.DeviceInterface.Bluetooth.VendorId"],
-                    ProductId = (UInt16)deviceInfo.Properties["System.DeviceInterface.Bluetooth.ProductId"]
-                };
-                Devices.Add(device);
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
+            AepProtocolIdProperty,
+            ProductIdProperty,
+            VendorIdProperty,
+            "System.DeviceInterface.Bluetooth.DeviceAddress"
+        };
 
         private void Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
         {
@@ -130,12 +60,144 @@ namespace UwpBluetoothSerialTool.Views
 
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        private ConnectionStatus _status;
+        private ConnectionStatus ConnectionStatus
+        {
+            get
+            {
+                return _status;
+            }
+            set
+            {
+                Set<ConnectionStatus>(ref _status, value);
+                OnPropertyChanged("Connected");
+                OnPropertyChanged("Disconnected");
+            }
+        }
+        private bool Connected
+        {
+            get
+            {
+                return _status == ConnectionStatus.Connected;
+            }
+        }
+        private bool Disconnected
+        {
+            get
+            {
+                return !Connected;
+            }
+        }
+
+        private ObservableCollection<Device> Devices = new ObservableCollection<Device>();
+
+        private Device _device;
+        private Device Device
+        {
+            get
+            {
+                return _device;
+            }
+            set
+            {
+                Set<Device>(ref _device, value);
+            }
+        }
+
+        private StreamSocket _socket;
+
+        private IBuffer _readBuffer = new Windows.Storage.Streams.Buffer(1024);
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public MainPage()
+        {
+            NavigationCacheMode = NavigationCacheMode.Required;
+            InitializeComponent();
+            CreateDeviceWatcher();
+        }
+
+        private void CreateDeviceWatcher()
+        {
+            DeviceWatcher watcher = DeviceInformation.CreateWatcher(BluetoothDevice.GetDeviceSelector(), RequestedProperties);
+            watcher.Added += async (w, deviceInfo) =>
+            {
+                await AddDeviceAsync(deviceInfo);
+            };
+            watcher.Removed += async (w, deviceInfoUpdate) =>
+            {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    RemoveDevice(deviceInfoUpdate.Id);
+                });
+            };
+            watcher.Start();
+        }
+
+        private void RemoveDevice(string id)
+        {
+            var result = from d in Devices where d.Id.Equals(id) select d;
+            Device device = result.FirstOrDefault();
+            if (device != null)
+            {
+                Devices.Remove(result.FirstOrDefault());
+                if (device.Equals(Device))
+                {
+                    Disconnect();
+                    Device = null;
+                }
+            }
+        }
+
+        private void RefreshDevices()
+        {
+            Devices.Clear();
+            Task.Run(async () =>
+            {
+                DeviceInformationCollection collection =
+                    await DeviceInformation.FindAllAsync(AqsFilter, RequestedProperties);
+                foreach (var deviceInfo in collection)
+                {
+                    await AddDeviceAsync(deviceInfo);
+                }
+            });
+        }
+
+        private async Task AddDeviceAsync(DeviceInformation deviceInfo)
+        {
+            if (!deviceInfo.Properties.ContainsKey(AepProtocolIdProperty))
+            {
+                return;
+            }
+            Guid protocolId = (Guid)deviceInfo.Properties[AepProtocolIdProperty];
+            if (!protocolId.Equals(BluetoothSerialProtocolId))
+            {
+                return;
+            }
+            string name = deviceInfo.Name;
+            BluetoothDevice btDevice = await BluetoothDevice.FromIdAsync(deviceInfo.Id);
+            if (btDevice != null)
+            {
+                name = btDevice.Name;
+            }
+            Device device = new Device()
+            {
+                Name = name,
+                Id = deviceInfo.Id,
+                VendorId = (ushort)deviceInfo.Properties[VendorIdProperty],
+                ProductId = (ushort)deviceInfo.Properties[ProductIdProperty]
+            };
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                Devices.Add(device);
+            });
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private void RefreshButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             RefreshDevices();
-            Device = null;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
@@ -186,16 +248,16 @@ namespace UwpBluetoothSerialTool.Views
                 ConnectionStatus = ConnectionStatus.Disconnected;
                 return;
             }
-            socket = new StreamSocket();
+            _socket = new StreamSocket();
             try
             {
-                await socket.ConnectAsync(rfcommDeviceService.ConnectionHostName, rfcommDeviceService.ConnectionServiceName);
+                await _socket.ConnectAsync(rfcommDeviceService.ConnectionHostName, rfcommDeviceService.ConnectionServiceName);
             }
             catch
             {
                 await DeviceNotAvailableContentDialog.ShowAsync();
-                socket.Dispose();
-                socket = null;
+                _socket.Dispose();
+                _socket = null;
                 ConnectionStatus = ConnectionStatus.Disconnected;
                 return;
             }
@@ -205,14 +267,14 @@ namespace UwpBluetoothSerialTool.Views
 
         private async Task ReadLoop()
         {
-            if (!Connected || socket == null)
+            if (!Connected || _socket == null)
             {
                 return;
             }
             IBuffer buffer = null;
             try
             {
-                buffer = await socket.InputStream.ReadAsync(readBuffer, 1024, InputStreamOptions.Partial);
+                buffer = await _socket.InputStream.ReadAsync(_readBuffer, 1024, InputStreamOptions.Partial);
             }
             catch
             {
@@ -226,7 +288,7 @@ namespace UwpBluetoothSerialTool.Views
                     dataReader.ReadBytes(data);
                     string text;
                     Message message = new Message(MessageDirection.Receive, data);
-                    device.Messages.Add(message);
+                    Device.Messages.Add(message);
                 }
             }
             else
@@ -247,12 +309,12 @@ namespace UwpBluetoothSerialTool.Views
 
         private void Disconnect()
         {
-            if (!Connected || socket == null)
+            if (!Connected || _socket == null)
             {
                 return;
             }
-            socket.Dispose();
-            socket = null;
+            _socket.Dispose();
+            _socket = null;
             ConnectionStatus = ConnectionStatus.Disconnected;
         }
 
@@ -260,7 +322,7 @@ namespace UwpBluetoothSerialTool.Views
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private async void SendButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            if (!Connected || socket == null)
+            if (!Connected || _socket == null)
             {
                 return;
             }
@@ -299,9 +361,9 @@ namespace UwpBluetoothSerialTool.Views
                 IBuffer buffer = dataWriter.DetachBuffer();
                 try
                 {
-                    await socket.OutputStream.WriteAsync(buffer);
+                    await _socket.OutputStream.WriteAsync(buffer);
                     Message message = new Message(MessageDirection.Send, data);
-                    device.Messages.Add(message);
+                    Device.Messages.Add(message);
                 }
                 catch
                 {

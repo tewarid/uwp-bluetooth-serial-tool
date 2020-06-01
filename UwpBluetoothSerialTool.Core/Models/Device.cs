@@ -20,7 +20,7 @@ namespace UwpBluetoothSerialTool.Core.Models
 
         public override bool Equals(object obj)
         {
-            if (obj is Device)
+            if (obj is Device && obj != null)
             {
                 return Id.Equals(((Device)obj).Id);
             }
