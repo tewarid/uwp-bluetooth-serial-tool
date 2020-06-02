@@ -31,15 +31,15 @@ namespace UwpBluetoothSerialTool.Views
 
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
-        static string AqsFilter { get; set; } = BluetoothDevice.GetDeviceSelector(); // could also
+        private static string AqsFilter { get; set; } = BluetoothDevice.GetDeviceSelector(); // could also
         // set this to RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort) but
         // the DeviceWatcher.Removed does not fire then
 
-        static string VendorIdProperty { get; set; } = "System.DeviceInterface.Bluetooth.VendorId";
-        static string ProductIdProperty { get; set; } = "System.DeviceInterface.Bluetooth.ProductId";
-        static string AepProtocolIdProperty { get; set; } = "System.Devices.Aep.ProtocolId";
-        static Guid BluetoothSerialProtocolId = new Guid("{E0CBF06C-CD8B-4647-BB8A-263B43F0F974}");
-        string[] RequestedProperties { get; set; } = new string[]
+        private static string AepProtocolIdProperty { get; set; } = "System.Devices.Aep.ProtocolId";
+        private static string VendorIdProperty { get; set; } = "System.DeviceInterface.Bluetooth.VendorId";
+        private static string ProductIdProperty { get; set; } = "System.DeviceInterface.Bluetooth.ProductId";
+        private static Guid BluetoothSerialProtocolUuid = new Guid("{E0CBF06C-CD8B-4647-BB8A-263B43F0F974}");
+        private string[] RequestedProperties { get; set; } = new string[]
         {
             AepProtocolIdProperty,
             ProductIdProperty,
@@ -169,8 +169,9 @@ namespace UwpBluetoothSerialTool.Views
             {
                 return;
             }
-            Guid protocolId = (Guid)deviceInfo.Properties[AepProtocolIdProperty];
-            if (!protocolId.Equals(BluetoothSerialProtocolId))
+            object protocolId;
+            deviceInfo.Properties.TryGetValue(AepProtocolIdProperty, out protocolId);
+            if (!BluetoothSerialProtocolUuid.Equals(protocolId))
             {
                 return;
             }
