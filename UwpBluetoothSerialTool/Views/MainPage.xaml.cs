@@ -259,7 +259,7 @@ namespace UwpBluetoothSerialTool.Views
                 return;
             }
             ConnectionStatus = ConnectionStatus.Connected;
-            ReadLoop();
+            _ = Task.Run(ReadLoop).ConfigureAwait(false);
         }
 
         private async Task ReadLoop()
@@ -283,9 +283,11 @@ namespace UwpBluetoothSerialTool.Views
                 using (DataReader dataReader = DataReader.FromBuffer(buffer))
                 {
                     dataReader.ReadBytes(data);
-                    string text;
                     Message message = new Message(MessageDirection.Receive, data);
-                    Device.Messages.Add(message);
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        Device.Messages.Add(message);
+                    });
                 }
             }
             else
@@ -294,7 +296,7 @@ namespace UwpBluetoothSerialTool.Views
                 Disconnect();
                 return;
             }
-            ReadLoop();
+            _ = Task.Run(ReadLoop).ConfigureAwait(false);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
