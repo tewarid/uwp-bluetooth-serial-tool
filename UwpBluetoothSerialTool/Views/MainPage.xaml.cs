@@ -222,7 +222,17 @@ namespace UwpBluetoothSerialTool.Views
                 ConnectionStatus = ConnectionStatus.Disconnected;
                 return;
             }
-            BluetoothDevice bluetoothDevice = await BluetoothDevice.FromIdAsync(Device.Id);
+            BluetoothDevice bluetoothDevice;
+            try
+            {
+                bluetoothDevice = await BluetoothDevice.FromIdAsync(Device.Id);
+            }
+            catch
+            {
+                await NoBluetoothContentDialog.ShowAsync();
+                ConnectionStatus = ConnectionStatus.Disconnected;
+                return;
+            }
             if (bluetoothDevice == null)
             {
                 DeviceAccessStatus accessStatus = DeviceAccessInformation.CreateFromId(Device.Id).CurrentStatus;
