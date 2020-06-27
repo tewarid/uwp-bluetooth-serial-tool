@@ -127,7 +127,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="HexToBin">
-      <Version>1.1.25</Version>
+      <Version>1.1.39</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
       <Version>3.2.1</Version>
