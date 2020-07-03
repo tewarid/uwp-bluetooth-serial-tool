@@ -47,6 +47,8 @@ namespace UwpBluetoothSerialTool.Views
             "System.DeviceInterface.Bluetooth.DeviceAddress"
         };
 
+        private DeviceWatcher watcher;
+
         private void Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
         {
             if (Equals(storage, value))
@@ -119,7 +121,7 @@ namespace UwpBluetoothSerialTool.Views
 
         private void CreateDeviceWatcher()
         {
-            DeviceWatcher watcher = DeviceInformation.CreateWatcher(BluetoothDevice.GetDeviceSelector(), RequestedProperties);
+            watcher = DeviceInformation.CreateWatcher(BluetoothDevice.GetDeviceSelector(), RequestedProperties);
             watcher.Added += async (w, deviceInfo) =>
             {
                 await AddDeviceAsync(deviceInfo);
