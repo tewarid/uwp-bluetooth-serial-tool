@@ -287,6 +287,7 @@ namespace UwpBluetoothSerialTool.Views
             }
             catch
             {
+                Disconnect();
                 return;
             }
             if (buffer.Length != 0)
@@ -324,9 +325,10 @@ namespace UwpBluetoothSerialTool.Views
             {
                 return;
             }
-            _socket.Dispose();
-            _socket = null;
             ConnectionStatus = ConnectionStatus.Disconnected;
+            var _socketCopy = _socket;
+            _socket = null;
+            _socketCopy.Dispose();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
