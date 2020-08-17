@@ -47,7 +47,7 @@ namespace UwpBluetoothSerialTool.Views
             "System.DeviceInterface.Bluetooth.DeviceAddress"
         };
 
-        private DeviceWatcher watcher;
+        private DeviceWatcher _watcher;
 
         private void Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
         {
@@ -65,10 +65,7 @@ namespace UwpBluetoothSerialTool.Views
         private ConnectionStatus _status;
         private ConnectionStatus ConnectionStatus
         {
-            get
-            {
-                return _status;
-            }
+            get { return _status; }
             set
             {
                 Set<ConnectionStatus>(ref _status, value);
@@ -78,17 +75,11 @@ namespace UwpBluetoothSerialTool.Views
         }
         private bool Connected
         {
-            get
-            {
-                return _status == ConnectionStatus.Connected;
-            }
+            get { return _status == ConnectionStatus.Connected; }
         }
         private bool Disconnected
         {
-            get
-            {
-                return !Connected;
-            }
+            get { return !Connected; }
         }
 
         private ObservableCollection<Device> Devices = new ObservableCollection<Device>();
@@ -96,14 +87,15 @@ namespace UwpBluetoothSerialTool.Views
         private Device _device;
         private Device Device
         {
-            get
-            {
-                return _device;
-            }
-            set
-            {
-                Set<Device>(ref _device, value);
-            }
+            get { return _device; }
+            set { Set<Device>(ref _device, value); }
+        }
+
+        private string _deviceToolTipText;
+        private string DeviceToolTipText
+        {
+            get { return _deviceToolTipText; }
+            set { Set<string>(ref _deviceToolTipText, value); }
         }
 
         private StreamSocket _socket;
@@ -121,19 +113,19 @@ namespace UwpBluetoothSerialTool.Views
 
         private void CreateDeviceWatcher()
         {
-            watcher = DeviceInformation.CreateWatcher(BluetoothDevice.GetDeviceSelector(), RequestedProperties);
-            watcher.Added += async (w, deviceInfo) =>
+            _watcher = DeviceInformation.CreateWatcher(BluetoothDevice.GetDeviceSelector(), RequestedProperties);
+            _watcher.Added += async (w, deviceInfo) =>
             {
                 await AddDeviceAsync(deviceInfo);
             };
-            watcher.Removed += async (w, deviceInfoUpdate) =>
+            _watcher.Removed += async (w, deviceInfoUpdate) =>
             {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     RemoveDevice(deviceInfoUpdate.Id);
                 });
             };
-            watcher.Start();
+            _watcher.Start();
         }
 
         private void RemoveDevice(string id)
@@ -183,7 +175,7 @@ namespace UwpBluetoothSerialTool.Views
             {
                 Name = deviceInfo.Name,
                 Id = deviceInfo.Id,
-                VendorId = (ushort)(vendorId ?? (ushort)0) ,
+                VendorId = (ushort)(vendorId ?? (ushort)0),
                 ProductId = (ushort)(productId ?? (ushort)0)
             };
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -205,7 +197,9 @@ namespace UwpBluetoothSerialTool.Views
         {
             if (e.AddedItems.Count > 0)
             {
-                Device = (Device)e.AddedItems[0];
+                Device device = (Device)e.AddedItems[0];
+                DeviceToolTipText = $"ID: {device.Id}{Environment.NewLine}Vendor ID: 0x{device.VendorId:x4}{Environment.NewLine}Product ID: 0x{device.ProductId:x4}{Environment.NewLine}Name: {device.Name}";
+                Device = device;
             }
         }
 

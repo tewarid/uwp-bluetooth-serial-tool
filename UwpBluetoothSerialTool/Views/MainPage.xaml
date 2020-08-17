@@ -41,14 +41,26 @@
                     <AppBarButton Icon="Setting" Click="SettingsAppBarButton_Click">
                     </AppBarButton>
                 </CommandBar>
-                <ComboBox
-                    x:Name="DevicesComboBox"
-                    x:Uid="Main_DevicesComboBox"
-                    ItemsSource="{x:Bind Devices}"
-                    IsEnabled="{x:Bind Disconnected, Mode=OneWay}"
-                    Width="Auto" SelectionChanged="DevicesComboBox_SelectionChanged"
-                    ToolTipService.ToolTip="{x:Bind Device.Id, Mode=OneWay}">
-                </ComboBox>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox
+                        x:Name="DevicesComboBox"
+                        x:Uid="Main_DevicesComboBox"
+                        ItemsSource="{x:Bind Devices}"
+                        IsEnabled="{x:Bind Disconnected, Mode=OneWay}"
+                        Width="Auto" SelectionChanged="DevicesComboBox_SelectionChanged">
+                    </ComboBox>
+                    <Button Background="{ThemeResource SystemControlTransparentBrush}" Margin="5, 0, 0, 0" VerticalAlignment="Bottom">
+                        <FontIcon Glyph="&#xE946;"/>
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind DeviceToolTipText, Mode=OneWay}" IsTextSelectionEnabled="True" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                        
+                </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button
                         x:Name="RefreshButton"
