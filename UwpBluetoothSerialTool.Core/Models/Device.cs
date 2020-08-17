@@ -12,6 +12,7 @@ namespace UwpBluetoothSerialTool.Core.Models
         public UInt16 VendorId { get; set; }
         public UInt16 ProductId { get; set; }
         public ObservableCollection<Message> Messages { get; private set; } = new ObservableCollection<Message>();
+        public object Address { get; set; }
 
         public override string ToString()
         {

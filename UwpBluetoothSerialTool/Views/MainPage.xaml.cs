@@ -31,20 +31,21 @@ namespace UwpBluetoothSerialTool.Views
 
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
-        private static string AqsFilter { get; set; } = BluetoothDevice.GetDeviceSelector(); // could also
-        // set this to RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort) but
-        // the DeviceWatcher.Removed does not fire then
+        private static string AqsFilter { get; set; } = BluetoothDevice.GetDeviceSelector();
+        // could also set this to RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort)
+        // but then the DeviceWatcher.Removed event does not fire
 
         private static string AepProtocolIdProperty { get; set; } = "System.Devices.Aep.ProtocolId";
         private static string VendorIdProperty { get; set; } = "System.DeviceInterface.Bluetooth.VendorId";
         private static string ProductIdProperty { get; set; } = "System.DeviceInterface.Bluetooth.ProductId";
+        private static string BluetoothAddressProperty { get; set; } = "System.DeviceInterface.Bluetooth.DeviceAddress";
         private static Guid BluetoothSerialProtocolUuid = new Guid("{E0CBF06C-CD8B-4647-BB8A-263B43F0F974}");
         private string[] RequestedProperties { get; set; } = new string[]
         {
             AepProtocolIdProperty,
             ProductIdProperty,
             VendorIdProperty,
-            "System.DeviceInterface.Bluetooth.DeviceAddress"
+            BluetoothAddressProperty
         };
 
         private DeviceWatcher _watcher;
@@ -113,7 +114,7 @@ namespace UwpBluetoothSerialTool.Views
 
         private void CreateDeviceWatcher()
         {
-            _watcher = DeviceInformation.CreateWatcher(BluetoothDevice.GetDeviceSelector(), RequestedProperties);
+            _watcher = DeviceInformation.CreateWatcher(BluetoothDevice.GetDeviceSelector());
             _watcher.Added += async (w, deviceInfo) =>
             {
                 await AddDeviceAsync(deviceInfo);
@@ -148,8 +149,7 @@ namespace UwpBluetoothSerialTool.Views
             Devices.Clear();
             Task.Run(async () =>
             {
-                DeviceInformationCollection collection =
-                    await DeviceInformation.FindAllAsync(AqsFilter, RequestedProperties);
+                DeviceInformationCollection collection = await DeviceInformation.FindAllAsync(AqsFilter);
                 foreach (var deviceInfo in collection)
                 {
                     await AddDeviceAsync(deviceInfo);
@@ -159,24 +159,27 @@ namespace UwpBluetoothSerialTool.Views
 
         private async Task AddDeviceAsync(DeviceInformation deviceInfo)
         {
-            if (!deviceInfo.Properties.ContainsKey(AepProtocolIdProperty))
+            // workaround for https://github.com/MicrosoftDocs/windows-uwp/issues/2646
+            deviceInfo = await DeviceInformation.CreateFromIdAsync(deviceInfo.Id, RequestedProperties);
+            if (deviceInfo == null)
             {
                 return;
             }
-            object protocolId;
-            deviceInfo.Properties.TryGetValue(AepProtocolIdProperty, out protocolId);
+            deviceInfo.Properties.TryGetValue(AepProtocolIdProperty, out object protocolId);
             if (!BluetoothSerialProtocolUuid.Equals(protocolId))
             {
                 return;
             }
             deviceInfo.Properties.TryGetValue(VendorIdProperty, out object vendorId);
             deviceInfo.Properties.TryGetValue(ProductIdProperty, out object productId);
+            deviceInfo.Properties.TryGetValue(BluetoothAddressProperty, out object bluetoothAddress);
             Device device = new Device()
             {
                 Name = deviceInfo.Name,
                 Id = deviceInfo.Id,
                 VendorId = (ushort)(vendorId ?? (ushort)0),
-                ProductId = (ushort)(productId ?? (ushort)0)
+                ProductId = (ushort)(productId ?? (ushort)0),
+                Address = bluetoothAddress
             };
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
@@ -198,7 +201,7 @@ namespace UwpBluetoothSerialTool.Views
             if (e.AddedItems.Count > 0)
             {
                 Device device = (Device)e.AddedItems[0];
-                DeviceToolTipText = $"ID: {device.Id}{Environment.NewLine}Vendor ID: 0x{device.VendorId:x4}{Environment.NewLine}Product ID: 0x{device.ProductId:x4}{Environment.NewLine}Name: {device.Name}";
+                DeviceToolTipText = $"ID: {device.Id}{Environment.NewLine}Vendor ID: 0x{device.VendorId:x4}{Environment.NewLine}Product ID: 0x{device.ProductId:x4}{Environment.NewLine}Address: {device.Address}{Environment.NewLine}Name: {device.Name}";
                 Device = device;
             }
         }
