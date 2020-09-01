@@ -1,4 +1,5 @@
 ﻿using HexToBinLib;
+using Microsoft.Toolkit.Uwp.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -50,7 +51,7 @@ namespace UwpBluetoothSerialTool.Views
 
         private DeviceWatcher _watcher;
 
-        private void Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
+        private void Set<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (Equals(storage, value))
             {
@@ -102,6 +103,9 @@ namespace UwpBluetoothSerialTool.Views
         private StreamSocket _socket;
 
         private IBuffer _readBuffer = new Windows.Storage.Streams.Buffer(1024);
+
+        private RfcommServiceProvider _rfcommProvider;
+        private StreamSocketListener _socketListener;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -201,9 +205,19 @@ namespace UwpBluetoothSerialTool.Views
             if (e.AddedItems.Count > 0)
             {
                 Device device = (Device)e.AddedItems[0];
-                DeviceToolTipText = $"ID: {device.Id}{Environment.NewLine}Vendor ID: 0x{device.VendorId:x4}{Environment.NewLine}Product ID: 0x{device.ProductId:x4}{Environment.NewLine}Address: {device.Address}{Environment.NewLine}Name: {device.Name}";
+                SetDeviceToolTipText(device);
                 Device = device;
             }
+        }
+
+        private void SetDeviceToolTipText(Device device)
+        {
+            string deviceIdLabel = "DeviceId".GetLocalized();
+            string vendorIdLabel = "VendorId".GetLocalized();
+            string productIdLabel = "ProductId".GetLocalized();
+            string addressLabel = "BluetoothAddress".GetLocalized();
+            string nameLabel = "DeviceName".GetLocalized();
+            DeviceToolTipText = $"{deviceIdLabel}: {device.Id}{Environment.NewLine}{vendorIdLabel}: 0x{device.VendorId:x4}{Environment.NewLine}{productIdLabel}: 0x{device.ProductId:x4}{Environment.NewLine}{addressLabel}: {device.Address}{Environment.NewLine}{nameLabel}: {device.Name}";
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
@@ -413,6 +427,77 @@ namespace UwpBluetoothSerialTool.Views
                     Clipboard.SetContent(dataPackage);
                 }
             }
+        }
+
+        private async void Listen_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            var toggleButton = (AppBarToggleButton)sender;
+            if (toggleButton.IsChecked == false)
+            {
+                if (_rfcommProvider != null)
+                {
+                    _rfcommProvider.StopAdvertising();
+                    _rfcommProvider = null;
+                }
+                if (_socketListener != null)
+                {
+                    _socketListener.Dispose();
+                    _socketListener = null;
+                }
+                return;
+            }
+            try
+            {
+                _rfcommProvider = await RfcommServiceProvider.CreateAsync(RfcommServiceId.SerialPort);
+                _socketListener = new StreamSocketListener();
+                _socketListener.ConnectionReceived += OnConnectionReceived;
+                await _socketListener.BindServiceNameAsync(_rfcommProvider.ServiceId.AsString(),
+                    SocketProtectionLevel.BluetoothEncryptionAllowNullAuthentication);
+                _rfcommProvider.StartAdvertising(_socketListener, true);
+            }
+            catch
+            {
+                await NoBluetoothContentDialog.ShowAsync();
+                toggleButton.IsChecked = false;
+                return;
+            }
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Event handler")]
+        private async void OnConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        {
+            if (_socket != null)
+            {
+                _socket.Dispose();
+                _socket = null;
+            }
+            if (_socketListener == null)
+            {
+                return;
+            }
+            _socket = args.Socket;
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                var remoteDevice = await BluetoothDevice.FromHostNameAsync(_socket.Information.RemoteHostName);
+                Device device = (from d in Devices where d.Id.Equals(remoteDevice.DeviceId) select d).FirstOrDefault();
+                if (device != null)
+                {
+                    DevicesComboBox.SelectedItem = device;
+                }
+                else
+                {
+                    device = new Device()
+                    {
+                        Name = remoteDevice.Name,
+                        Id = remoteDevice.DeviceId,
+                        Address = remoteDevice.HostName
+                    };
+                }
+                SetDeviceToolTipText(device);
+                Device = device;
+                ConnectionStatus = ConnectionStatus.Connected;
+                _ = Task.Run(ReadLoop).ConfigureAwait(false);
+            });
         }
     }
 }

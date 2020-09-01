@@ -28,6 +28,14 @@
             -->
             <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
                 <CommandBar Background="Transparent" OverflowButtonVisibility="Collapsed">
+                    <AppBarToggleButton Click="Listen_Click" Visibility="Visible">
+                        <AppBarToggleButton.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon Glyph="&#xE703;" />
+                                <TextBlock x:Uid="Main_ListenToggleButton" Margin="10, 0, 0 ,0" />
+                            </StackPanel>
+                        </AppBarToggleButton.Content>
+                    </AppBarToggleButton>
                     <AppBarButton Icon="Delete" IsEnabled="{x:Bind Connected, Mode=OneWay}">
                         <Button.Flyout>
                             <Flyout>
@@ -59,7 +67,6 @@
                             </Flyout>
                         </Button.Flyout>
                     </Button>
-                        
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button

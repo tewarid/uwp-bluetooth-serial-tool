@@ -185,6 +185,7 @@
     <value>This application lets you communicate with your Bluetooth Serial device. You can:
 
 - Connect to a paired Bluetooth Serial device
+- Listen for incoming Bluetooth Serial connections
 - Send text or binary
 - Pick a line ending for text
 - Receive text or binary
@@ -201,8 +202,8 @@
     <comment>First use prompt message primary button text</comment>
   </data>
   <data name="WhatsNew_Body.Text" xml:space="preserve">
-    <value>- Support for Brazilian Portuguese
-- New logo</value>
+    <value>- Listen for incoming Bluetooth Serial connections
+- Bug fixes and minor improvements</value>
     <comment>What's new prompt message body</comment>
   </data>
   <data name="WhatsNewDialog.Title" xml:space="preserve">
@@ -344,5 +345,23 @@
   <data name="Main_DeleteFlyoutConfirmation.Text" xml:space="preserve">
     <value>All messages will be removed. Do you want to continue?</value>
     <comment>DeleteFlyout confirmation</comment>
+  </data>
+  <data name="BluetoothAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="DeviceId" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="DeviceName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ProductId" xml:space="preserve">
+    <value>Product ID</value>
+  </data>
+  <data name="VendorId" xml:space="preserve">
+    <value>Vendor ID</value>
+  </data>
+  <data name="Main_ListenToggleButton.Text" xml:space="preserve">
+    <value>Listen</value>
   </data>
 </root>
