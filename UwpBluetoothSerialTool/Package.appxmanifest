@@ -11,10 +11,10 @@
 
   <Identity
     Name="23413DevendraTewari.BluetoothSerialTool"
-    Publisher="CN=Devendra Tewari"
-    Version="1.0.11.0" />
+    Publisher="CN=45EE7F3F-ED2B-45A2-91C7-7AC934F26DC4"
+    Version="1.0.14.0" />
 
-  <mp:PhoneIdentity PhoneProductId="8ed14400-c5d2-49c6-a552-3d212caa8e8f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="6f30dd45-e53d-49df-9c54-9fb453ece999" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Bluetooth Serial Tool</DisplayName>

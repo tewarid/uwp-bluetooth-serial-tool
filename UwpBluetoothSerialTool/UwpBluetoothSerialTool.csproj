@@ -19,7 +19,7 @@
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <PackageCertificateKeyFile>
     </PackageCertificateKeyFile>
-    <PackageCertificateThumbprint></PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>645B48F64E405140AFBAA75CA751AA5ABDB8F60B</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
